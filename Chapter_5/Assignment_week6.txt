@@ -1,0 +1,42 @@
+1. How does TD learning differ from the Monte Carlo method?
+
+Monte Carlo method는 model의 environment가 불확실 한 경우에 사용된다. 하지만 무조건 episodic tasks에서만 적용 가능하며, episode가 너무 길어질 경우에는 시간이 오래 걸린다. 이런 경우에 TD learning을 사용한다.
+
+TD learning은 Monte Carlo method처럼 model dynamics를 알 필요가 없다. 하지만 Monte Carlo method와는 다르게 episodic tasks가 아니어도 사용 가능하며 bootstrapping 기법을 사용한다.
+
+* bootstrapping : 과거의 추정치를 기반으로 현재의 추정치를 근사하는 기법.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2. What exactly is a TD error?
+
+TD prediction의 공식은 V(s) = V(s) + α(r + γV(s`) - V(s)) 이다.
+여기서 V(s)는 value of previous state, V(s`)는 value of current state, α는 learning rate, r은 reward, γ는 discount factor를 의미한다. 
+
+이 때, learning rate와 곱해지는 괄호 안의 r + γV(s`) - V(s)는  실제값과 예측값의 차이를 의미하는 사실상의 error이다. 이를 TD error라고 부른다.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3. What is the difference between TD prediction and control?
+
+TD prediction에서는 value function의 추정치를 구했다. TD control에서는 value function의 최댓값을 구한다.
+
+참고로 TD control에는 off-policy인 Q learning과 on-policy인 SARSA가 있다.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4. How to build an intelligent agent using Q learning?
+
+Q learning의 식은 Q(s, a) = Q(s, a) + α(r + γmaxQ(s`a`) - Q(s, a)) 이다. 이 때, current value인 Q(s`a`)의 값은 최대 value를 고르면 되지만, prev value Q(s, a)는 어떤 상태를 골라야 할지 모를 수도 있다. 그러므로 Q(s, a)는 epsilon greedy policy를 이용해 선택한다.
+
+epsilon greedy policy는 0과 1 사이의 수 epsilon을 설정한 후, epsilon보다 작은 수가 나오면 최적의 값(optimal value)를 그대로 사용하고, epsilon보다 큰 수가 나오면 새로운 값을 시도하는 정책이다.
+
+Q learning을 반복하다보면 이미 정해져있는 value의 값이 갱신될 수도 있다.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5. What is the difference between Q learning and SARSA?
+기본적으로 Q learning과 SARSA는 같은 공식을 사용한다. 
+다음은 SARSA의 공식이다. Q(s, a) = Q(s, a) + α(r + γQ(s`a`) - Q(s, a)) Q learning과 가장 다른 점은 on-policy이기 때문에 γmaxQ(s`a`)가 아닌 γQ(s`a`)값을 사용한다는 것이다.
+
+즉, Q value를 업데이트 하는 과정에서 최댓값을 쓰느냐 마느냐의 차이로 Q learning과 SARSA가 구분된다.
